@@ -6,7 +6,7 @@ export async function obtenerProductos() {
             method: "GET"
         });
         const data = await response.json()
-        console.log(`Los productos son: \n`)
+        console.log(`\nLos productos son: \n`)
         data.forEach((producto) => {
             console.log(
                 `ID: ${producto.id}\n` +
@@ -28,7 +28,7 @@ export async function obtenerProducto(id) {
             method: "GET"
         })
         const data = await response.json()
-        console.log(`La informacion del producto es: \n`)
+        console.log(`\nLa informacion del producto es: \n`)
             console.log(
                 `ID: ${data.id}\n` +
                 `Título: ${data.title}\n` +
@@ -52,7 +52,7 @@ export async function agregarProducto(producto) {
         })
 
         const data = await response.json()
-        console.log(`Producto agregado de manera exitosa: \n`)
+        console.log(`\nProducto agregado de manera exitosa: \n`)
             console.log(
                 `ID: ${data.id}\n` +
                 `Título: ${data.title}\n` +
@@ -71,7 +71,7 @@ export async function eliminarProducto(id) {
             method: "DELETE"
         })
         const data = await response.json()
-        console.log(`Producto eliminado con exito\n`)
+        console.log(`\nProducto eliminado con exito\n`)
             console.log(
                 `ID: ${data.id}\n` +
                 `Título: ${data.title}\n` +
@@ -94,7 +94,7 @@ export async function modificarProducto(id, producto) {
             body: JSON.stringify(producto)
         })
         const data = await response.json()
-        console.log(`Producto modificado con exito\n`)
+        console.log(`\nProducto modificado con exito\n`)
             console.log(
                 `ID: ${data.id}\n` +
                 `Título: ${data.title}\n` +
