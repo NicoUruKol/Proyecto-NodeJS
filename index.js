@@ -1,90 +1,40 @@
-const apiUrl = 'https://fakestoreapi.com'
+import { 
+    agregarProducto, 
+    eliminarProducto, 
+    modificarProducto, 
+    obtenerProducto, 
+    obtenerProductos 
+} from "./consumoAPI.js";
 
-const BASE_URL = 'https://fakestoreapi.com';
+const argumentos = process.argv.slice(2);
+console.log("Argumentos recibidos:", argumentos);
 
-// Utilidad simple para dividir "products/15" -> {resource:'products', id:'15'}
-function parsePath(p = '') {
-    const [resource = '', id = ''] = p.split('/');
-    return { resource, id };
+if (argumentos[0] === "GET" && argumentos[1] === "products") {
+    obtenerProductos()
+
+    }else if(argumentos[0] === "GET" && argumentos[1].includes("products/")){
+    obtenerProducto(argumentos[1])
+
+    }else if(argumentos[0] === "POST" && argumentos[1] === "products" && argumentos.length === 5){
+    const producto = {
+        title: argumentos[2],
+        price: argumentos[3],
+        category: argumentos[4]
     }
+    agregarProducto(producto)
 
-    async function getAllProducts() {
-    const res = await fetch(`${apiUrl}/products`);
-    const ok = res.ok;
-    const data = ok ? await res.json() : null;
-    if (!ok) throw new Error(`GET products -> ${res.status} ${res.statusText}`);
-    console.log(data);
-    }
 
-    async function getProductById(id) {
-    const res = await fetch(`${apiUrl}/products/${id}`);
-    const ok = res.ok;
-    const data = ok ? await res.json() : null;
-    if (!ok) throw new Error(`GET products/${id} -> ${res.status} ${res.statusText}`);
-    console.log(data);
-    }
+    }else if (argumentos[0] === "DELETE" && argumentos[1].includes("products/")) {
+    eliminarProducto(argumentos[1])
 
-    async function createProduct(title, price, category) {
-    const priceNum = Number(price);
-    if (Number.isNaN(priceNum)) throw new Error(`El precio debe ser numérico. Recibido: "${price}"`);
+}else if (argumentos[0] === "PUT" && argumentos[1].includes("products/") && argumentos.length === 5) {
+    const producto = {
+        title: argumentos[2],
+        price: argumentos[3],
+        category: argumentos[4]
+    };
+    modificarProducto(argumentos[1], producto);
 
-    const body = { title, price: priceNum, category };
-
-    const res = await fetch(`${apiUrl}/products`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
-    const ok = res.ok;
-    const data = ok ? await res.json() : null;
-    if (!ok) throw new Error(`POST products -> ${res.status} ${res.statusText}`);
-    console.log(data);
-    }
-
-async function deleteProduct(id) {
-    const res = await fetch(`${apiUrl}/products/${id}`, { method: 'DELETE' });
-    const ok = res.ok;
-    const data = ok ? await res.json() : null;
-    if (!ok) throw new Error(`DELETE products/${id} -> ${res.status} ${res.statusText}`);
-    console.log(data);
-    }
-
-async function main() {
-    const [, , rawMethod, rawPath, ...rest] = process.argv;
-    const method = (rawMethod || '').toUpperCase();
-    const path = (rawPath || '');
-
-    try {
-        if (!method || !path) {
-        throw new Error('Uso: npm run start <METHOD> <path> [args]');
-        }
-
-        const { resource, id } = parsePath(path);
-
-        if (method === 'GET') {
-        if (resource === 'products' && !id) return getAllProducts();
-        if (resource === 'products' && id)  return getProductById(id);
-        throw new Error(`Ruta GET no soportada: ${path}`);
-        }
-
-        if (method === 'POST') {
-        if (resource !== 'products') throw new Error(`Ruta POST no soportada: ${path}`);
-        const [title, price, category] = rest;
-        if (!title || !price || !category) {
-            throw new Error('Uso: npm run start POST products <title> <price> <category>');
-        }
-        return createProduct(title, price, category);
-        }
-
-        if (method === 'DELETE') {
-        if (resource === 'products' && id) return deleteProduct(id);
-        throw new Error(`Ruta DELETE no soportada: ${path}`);
-        }
-
-        throw new Error(`Método no soportado: ${method}`);
-    } catch (e) {
-        console.error('[ERROR]', e.message);
-    }
+}else{
+    console.log("Comando erroneo")
 }
-
-main();
