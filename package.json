@@ -4,11 +4,25 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": " node index.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "type": "module"
+  "description": "Aplicación en **Node.js** para interactuar con la [FakeStore API](https://fakestoreapi.com/) desde la terminal.  \r Permite listar, consultar, agregar, modificar y eliminar productos.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicoUruKol/Proyecto-NodeJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NicoUruKol/Proyecto-NodeJS/issues"
+  },
+  "homepage": "https://github.com/NicoUruKol/Proyecto-NodeJS#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "firebase": "^12.5.0"
+  }
 }
