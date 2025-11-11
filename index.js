@@ -1,40 +1,40 @@
-import { 
-    agregarProducto, 
-    eliminarProducto, 
-    modificarProducto, 
-    obtenerProducto, 
-    obtenerProductos 
-} from "./consumoAPI.js";
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
-const argumentos = process.argv.slice(2);
-console.log("Argumentos recibidos:", argumentos);
+import productsRouter from './src/routes/products.routes.js';
+import authRouter from './src/routes/auth.routes.js';
 
-if (argumentos[0] === "GET" && argumentos[1] === "products") {
-    obtenerProductos()
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-    }else if(argumentos[0] === "GET" && argumentos[1].includes("products/")){
-    obtenerProducto(argumentos[1])
+// CORS
+app.use(cors());
 
-    }else if(argumentos[0] === "POST" && argumentos[1] === "products" && argumentos.length === 5){
-    const producto = {
-        title: argumentos[2],
-        price: argumentos[3],
-        category: argumentos[4]
-    }
-    agregarProducto(producto)
+// Body parser (premisa del curso)
+app.use(bodyParser.json());
 
+// Rutas
+app.use('/api', productsRouter); // /api/products...
+app.use('/auth', authRouter);    // /auth/login
 
-    }else if (argumentos[0] === "DELETE" && argumentos[1].includes("products/")) {
-    eliminarProducto(argumentos[1])
+// Salud
+app.get('/', (_req, res) => res.send('API OK'));
 
-}else if (argumentos[0] === "PUT" && argumentos[1].includes("products/") && argumentos.length === 5) {
-    const producto = {
-        title: argumentos[2],
-        price: argumentos[3],
-        category: argumentos[4]
-    };
-    modificarProducto(argumentos[1], producto);
+// 404 (rutas no definidas)
+app.use((req, res) => {
+    res.status(404).json({ message: 'Ruta no encontrada' });
+});
 
-}else{
-    console.log("Comando erroneo")
-}
+// Manejo de errores 400/401/403/500
+// (lanzar con next({ status: 400, message: '...' }) si querés códigos específicos)
+app.use((err, _req, res, _next) => {
+    const status = err.status && Number.isInteger(err.status) ? err.status : 500;
+    const message = err.message || 'Error interno';
+    res.status(status).json({ message });
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
