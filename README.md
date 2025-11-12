@@ -55,25 +55,6 @@ Proyecto-NodeJS/
 
 ---
 
-## 🔐 Variables de Entorno (`.env`)
-
-```env
-PORT=3000
-
-AUTH_EMAIL=admin@tannatco.com
-AUTH_PASSWORD=123456
-JWT_SECRET=supersecreto
-
-FIREBASE_API_KEY=AIzaSyCp2E-ZLPkuSenyZvjFD2XTL-zlm6S9p04
-FIREBASE_AUTH_DOMAIN=tannatco-back-node.firebaseapp.com
-FIREBASE_PROJECT_ID=tannatco-back-node
-FIREBASE_STORAGE_BUCKET=tannatco-back-node.firebasestorage.app
-FIREBASE_MESSAGING_SENDER_ID=413307252073
-FIREBASE_APP_ID=1:413307252073:web:fea68dc75a834c3bdba1f8
-```
-
----
-
 ## 🚀 Iniciar el Servidor
 
 Instalar dependencias:
