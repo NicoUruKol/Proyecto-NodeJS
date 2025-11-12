@@ -135,10 +135,10 @@ Crea un nuevo producto.
 **Body (JSON):**
 ```json
 {
-  "name": "Tannat Reserva",
+  "name": "Garzon Tannat Reserva",
   "price": 125000,
-  "description": "Vino tinto intenso con notas a frutos negros",
-  "imagen": "https://tannatco.com/img/tannat.png"
+  "description": "Vino tinto intenso con notas a frutos rojos",
+  "imagen": "https://bodegagarzon.com/wp-content/uploads/2018/07/reserva_tannat.png",
 }
 ```
 
