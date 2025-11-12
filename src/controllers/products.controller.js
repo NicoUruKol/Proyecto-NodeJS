@@ -46,7 +46,11 @@ export const createProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
     try {
         const ok = await deleteProductService(req.params.id);
-        if (!ok) return res.status(404).json({ message: 'Producto no encontrado' });
-        res.status(204).send();
-    } catch (err) { next(err); }
+        if (!ok) return res.status(404).json({ message: "Producto no encontrado" });
+        
+        res.status(200).json({ message: "Producto eliminado con éxito 🗑️" });
+    } catch (err) {
+        next(err);
+    }
 };
+
