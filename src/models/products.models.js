@@ -8,8 +8,7 @@ import {
     setDoc, 
     query, 
     where, 
-    limit, 
-    orderBy, 
+    limit,  
     deleteDoc
 } from 'firebase/firestore';
 
@@ -21,7 +20,7 @@ export async function obtenerProductos() {
 }
 
 
-// Busca por docId; si no existe, intenta por productID (num/str)
+// Buscamos un producto x ID
 export async function obtenerProductoPorId(id) {
     const direct = await getDoc(doc(db, 'products', String(id)));
     if (direct.exists()) return { id: direct.id, ...direct.data() };
@@ -39,7 +38,7 @@ export async function obtenerProductoPorId(id) {
     return null;
 }
 
-// Crear: docId AUTOGENERADO por Firestore + productID ÚNICO (provisto por vos)
+// Creamos un producto
 export async function crearProducto(newProduct) {
     const name = String(newProduct.name ?? '').trim();
     const price = Number(newProduct.price ?? NaN);
@@ -61,7 +60,7 @@ export async function crearProducto(newProduct) {
         throw e;
     }
 
-    // Validaciones básicas de name/price
+    // Validamos name/price
     if (!name) {
         const e = new Error('name es requerido');
         e.status = 400;
@@ -73,7 +72,7 @@ export async function crearProducto(newProduct) {
         throw e;
     }
 
-    // Unicidad: chequear que NO exista ese productID
+    // Validamos que NO exista ese productID
     const q = query(colRef, where('productID', '==', productID), limit(1));
     const existsSnap = await getDocs(q);
     if (!existsSnap.empty) {
@@ -89,14 +88,8 @@ export async function crearProducto(newProduct) {
     return { id: snap.id, ...snap.data() };
 }
 
-// Mantengo delete por docId o productID
+// Borrar un producto
 export async function borrarProducto(id) {
-    // 1) intentar por docId
-    const byId = doc(db, 'products', String(id));
-    const s = await getDoc(byId);
-    if (s.exists()) { await deleteDoc(byId); return true; }
-
-    // 2) intentar por productID
     const asNum = Number(id);
     const q = Number.isNaN(asNum)
         ? query(colRef, where('productID', '==', id), limit(1))
@@ -109,7 +102,7 @@ export async function borrarProducto(id) {
     return true;
 }
 
-// (Por si en el futuro agregás update): impedir cambiar productID
+// Actualizamos un producto (no tocamos ID)
 export async function actualizarProducto(id, parcial) {
     if (Object.prototype.hasOwnProperty.call(parcial, 'productID')) {
         const e = new Error('productID es inmutable');
