@@ -15,11 +15,14 @@ export const getAllProducts = async (_req, res, next) => {
 
 export const getProductById = async (req, res, next) => {
     try {
-        const { id } = req.params; // puede ser docId o productID
+        const { id } = req.params; 
         const product = await getProductByIdService(id);
-        if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
+        if (!product) 
+            return res.status(404).json({ message: 'Producto no encontrado' });
         res.status(200).json(product);
-    } catch (err) { next(err); }
+    } catch (err) { 
+        next(err); 
+    }
 };
 
 export const addProduct = async (req, res, next) => {
@@ -84,9 +87,12 @@ export const editProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
     try {
         const ok = await deleteProductService(req.params.id);
-        if (!ok) return res.status(404).json({ message: "Producto no encontrado" });
-        
-        return res.status(200).json({ message: "Producto eliminado con éxito 🗑️" });
+        if (!ok) {
+            return res.status(404).json({ message: "Producto no encontrado" });
+        }
+        return res
+        .status(200)
+        .json({ message: "Producto eliminado con éxito" });
     } catch (err) {
         next(err);
     }
