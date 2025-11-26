@@ -2,7 +2,8 @@ import {
     getAllProductsService,
     getProductByIdService,
     addProductService,
-    deleteProductService
+    deleteProductService,
+    editProductService,
 } from '../services/products.services.js';
 
 export const getAllProducts = async (_req, res, next) => {
@@ -21,7 +22,7 @@ export const getProductById = async (req, res, next) => {
     } catch (err) { next(err); }
 };
 
-export const createProduct = async (req, res, next) => {
+export const addProduct = async (req, res, next) => {
     try {
         const { name, price, description, imagen, productID } = req.body;
 
@@ -53,6 +54,31 @@ export const createProduct = async (req, res, next) => {
         }
         next(err);
         }
+};
+
+export const editProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const productData = req.body;
+
+        if (!id) {
+        return res.status(400).json({ message: "Falta ID de producto" });
+        }
+
+        if (!productData || Object.keys(productData).length === 0) {
+        return res.status(400).json({ message: "Faltan datos para actualizar" });
+        }
+
+        const updatedProduct = await editProductService(id, productData);
+
+        if (!updatedProduct) {
+        return res.status(404).json({ message: "Producto no encontrado" });
+        }
+
+        return res.status(200).json(updatedProduct);
+    } catch (error) {
+        next(error);
+    }
 };
 
 export const deleteProduct = async (req, res, next) => {

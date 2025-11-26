@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-// Valida contra variables de entorno (simple para el TP)
+
 export const validateUser = (email, password) => {
     return (
         email === process.env.AUTH_EMAIL &&

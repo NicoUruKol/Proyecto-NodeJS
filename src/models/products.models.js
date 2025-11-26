@@ -102,20 +102,39 @@ export async function borrarProducto(id) {
     return true;
 }
 
-// Actualizamos un producto (no tocamos ID)
-export async function actualizarProducto(id, parcial) {
-    if (Object.prototype.hasOwnProperty.call(parcial, 'productID')) {
-        const e = new Error('productID es inmutable');
-        e.code = 'PRODUCT_ID_IMMUTABLE';
+// Editar un producto
+export async function actualizarProducto(productIDParam, parcial) {
+    // No permitir que cambien el productID
+    if (Object.prototype.hasOwnProperty.call(parcial, "productID")) {
+        const e = new Error("productID es inmutable");
+        e.code = "PRODUCT_ID_IMMUTABLE";
         e.status = 400;
         throw e;
     }
-    const ref = doc(db, 'products', String(id));
-    const curr = await getDoc(ref);
-    if (!curr.exists()) return null;
 
-    const merged = { ...curr.data(), ...parcial, productID: curr.data().productID };
+    const asNum = Number(productIDParam);
+    const filtroProductID = Number.isNaN(asNum) ? productIDParam : asNum;
+
+    // Buscamos el documento por el campo productID
+    const q = query(colRef, where("productID", "==", filtroProductID), limit(1));
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+        return null;
+    }
+
+    const docSnap = snap.docs[0];
+    const ref = doc(db, "products", docSnap.id);
+    const currData = docSnap.data();
+
+    const merged = {
+        ...currData,
+        ...parcial,
+        productID: currData.productID, 
+    };
+
     await setDoc(ref, merged, { merge: true });
-    const snap = await getDoc(ref);
-    return { id: snap.id, ...snap.data() };
+
+    const finalSnap = await getDoc(ref);
+    return { id: finalSnap.id, ...finalSnap.data() };
 }
