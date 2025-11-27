@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const corsConfig = {
-    origin: ['http://localhost:3000', 'https://tannatco.vercel.app'],
+    origin: ['http://localhost:3000', 'https://proyecto-node-js-eight.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

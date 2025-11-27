@@ -1,33 +1,45 @@
-# 🍷 Proyecto Final Back-End / Node.js  
-## API REST de Gestión de Productos — *Tannat & Co.*
+🍷 Proyecto Final Back-End / Node.js
+API REST de Gestión de Productos — Tannat & Co.
+📖 Descripción
 
----
+API REST desarrollada con Node.js + Express, conectada a Firebase Firestore como base de datos.
+Implementa un CRUD completo de productos con:
 
-### 📖 Descripción
+🔐 Autenticación JWT
 
-API REST desarrollada con **Node.js** y **Express**, conectada a **Firebase Firestore** como base de datos.  
-Permite **listar, consultar, crear y eliminar productos** mediante endpoints protegidos con **autenticación JWT**.  
+📦 Modelo multi-capa (Routes → Controllers → Services → Models)
 
-Desarrollado como parte de la **entrega final del curso de Back-End / Node.js** del programa *Talento Tech 2025*.
+🔥 Integración con Firestore
 
----
+🌎 Deploy en Vercel
 
-## ⚙️ Tecnologías Utilizadas
+Este proyecto forma parte de la entrega final del curso Back-End / Node.js del programa Talento Tech 2025.
 
-- 🟢 **Node.js**
-- ⚙️ **Express.js**
-- 🔥 **Firebase Firestore**
-- 🌐 **CORS**
-- 🧩 **body-parser**
-- 🔑 **jsonwebtoken (JWT)**
-- ⚫ **dotenv**
-- 🧪 **Postman** (para pruebas)
+🌐 Deploy en Producción
+🟣 API Online (Vercel):
+🧪 Tester Web (interfaz para probar todos los endpoints):
 
----
+👉 https://proyecto-node-js-eight.vercel.app
 
-## 📁 Estructura del Proyecto
+(Login, listado, búsqueda, creación, edición y eliminación de productos)
 
-```
+⚙️ Tecnologías Utilizadas
+
+🟢 Node.js
+
+⚙️ Express.js
+
+🔥 Firebase Firestore
+
+🔐 JWT – jsonwebtoken
+
+🌐 CORS
+
+🧪 Postman
+
+⚫ dotenv
+
+📁 Estructura del Proyecto
 Proyecto-NodeJS/
 │
 ├── src/
@@ -47,199 +59,131 @@ Proyecto-NodeJS/
 │   └── data/
 │       └── firebase.js
 │
-├── .env
 ├── index.js
-├── package.json
-└── README.md
-```
+├── tester.html
+├── .env (ignorado)
+└── package.json
 
----
-
-## 🚀 Iniciar el Servidor
-
-Instalar dependencias:
-
-```bash
+🚀 Iniciar el Servidor
 npm install
-```
-
-Ejecutar el servidor:
-
-```bash
 npm start
-```
 
-El servidor corre en:  
-👉 **http://localhost:3000**
 
----
+Servidor local:
+👉 http://localhost:3000
 
-## 🧠 Endpoints Disponibles
+🧠 Endpoints Disponibles
 
-### 🔓 Público
+Las rutas están agrupadas bajo /api.
 
-#### **GET /api/products**
-Obtiene la lista completa de productos.
+🔓 Público
+GET /api/products
 
-#### **GET /api/products/:id**
-Obtiene un producto específico por su `id` o `productID`.
+📌 Lista todos los productos.
 
----
+GET /api/products/:id
 
-### 🔐 Protegidos (requieren Token JWT)
+📌 Trae un producto por:
 
-#### **POST /auth/login**
-Inicia sesión con credenciales válidas y devuelve un token.
+id de Firestore, o
 
-**Body (JSON):**
-```json
+productID (identificador numérico propio)
+
+🔐 Protegidos (requieren JWT)
+POST /api/login
+
+Genera un token válido.
+
+Body:
+
 {
-  "email": "admin@tannatco.com",
+  "email": "test@gmail.com",
   "password": "123456"
 }
-```
 
-**Respuesta exitosa:**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "type": "Bearer"
-}
-```
 
----
-
-#### **POST /api/products/create**
-Crea un nuevo producto.  
-🔒 Requiere header `Authorization: Bearer <token>`
-
-**Body (JSON):**
-```json
-{
-  "name": "Garzon Tannat Reserva",
-  "price": 125000,
-  "description": "Vino tinto intenso con notas a frutos rojos",
-  "imagen": "https://bodegagarzon.com/wp-content/uploads/2018/07/reserva_tannat.png",
-}
-```
-
-**Respuesta:**
-```json
-{
-  "id": "27",
-  "name": "Garzon Tannat Reserva",
-  "price": 125000,
-  "description": "Vino tinto intenso con notas a frutos rojos",
-  "imagen": "https://bodegagarzon.com/wp-content/uploads/2018/07/reserva_tannat.png",
-  "productID": 27
-}
-```
-
----
-
-#### **DELETE /api/products/:id**
-Elimina un producto por su `id` o `productID`.  
-🔒 Requiere header `Authorization: Bearer <token>`
-
-**Respuesta exitosa:**
-```json
-{ "message": "Producto eliminado con éxito 🗑️" }
-```
-
----
-
-## 🧾 Ejemplo de flujo en Postman
-
-<details>
-<summary>🧪 Paso a paso</summary>
-
-### 1️⃣ **Login**
-```
-POST http://localhost:3000/auth/login
-```
-Body → JSON:
-```json
-{
-  "email": "admin@tannatco.com",
-  "password": "123456"
-}
-```
-✅ Copiar el valor del `"token"` devuelto.
-
----
-
-### 2️⃣ **Crear producto**
-```
-POST http://localhost:3000/api/products/create
-```
-Headers:
-```
-Authorization: Bearer <tu_token>
-Content-Type: application/json
-```
-Body → JSON:
-```json
-{
-  "name": "Achaval Ferrer Finca Las Nazarenas",
-  "price": 160000,
-  "description": "Notas de cata: proviene de viñedos de más de 90 años...",
-  "imagen": "https://acdn-us.mitiendanube.com/stores/001/214/080/products/diseno.png"
-}
-```
-
----
-
-### 3️⃣ **Eliminar producto**
-```
-DELETE http://localhost:3000/api/products/23
-```
-Headers:
-```
-Authorization: Bearer <tu_token>
-```
 Respuesta:
-```json
-{ "message": "Producto eliminado con éxito 🗑️" }
-```
+
+{ "token": "xxxxx.yyyyy.zzzzz" }
+
+POST /api/products/create
+
+Crea un producto nuevo.
+🔒 Requiere Authorization: Bearer <token>
+
+Body:
+
+{
+  "name": "Garzon Tannat Reserva",
+  "price": 12000,
+  "description": "Vino tinto de Uruguay",
+  "imagen": "https://...",
+  "productID": 101
+}
+
+PUT /api/products/:id
+
+Actualiza parcialmente un producto (name, price, imagen, description).
+❗ productID NO se puede modificar.
+
+Body (ejemplo):
+
+{
+  "price": 15000,
+  "imagen": "https://nuevaimagen.com/tannat.png"
+}
+
+DELETE /api/products/:id
+
+Elimina un producto por su productID o id de Firestore.
+
+🧪 Ejemplo de flujo en Postman
+<details> <summary>Ver pasos</summary>
+1️⃣ Login
+
+POST
+{{url}}/api/login
+
+2️⃣ Crear producto
+
+POST
+{{url}}/api/products/create
+
+3️⃣ Editar producto
+
+PUT
+{{url}}/api/products/101
+
+4️⃣ Eliminar producto
+
+DELETE
+{{url}}/api/products/101
 
 </details>
+🧱 Manejo de Errores
+Código	Descripción
+400	Datos inválidos
+401	Token ausente o inválido
+403	Acceso denegado
+404	Producto no encontrado
+409	productID duplicado
+500	Error interno
+🧩 Flujo Interno
+Client → Routes → Controllers → Services → Models → Firestore
 
----
 
-## 🧱 Manejo de Errores
+Routes: definen las URLs
 
-| Código | Descripción |
-|--------|--------------|
-| **400** | Datos inválidos o campos incompletos |
-| **401** | Token inválido o ausente |
-| **403** | Acceso denegado |
-| **404** | Producto o ruta no encontrada |
-| **409** | Conflicto (productID duplicado) |
-| **500** | Error interno del servidor |
+Controllers: manejan req/res
 
----
+Services: lógica de negocio
 
-## 🧩 Flujo Interno de la App
+Models: conexión a Firestore
 
-```
-Rutas → Controladores → Servicios → Modelos → Firestore
-```
+Middleware: valida JWT
 
-Cada capa cumple una función:
-- **Rutas:** definen los endpoints HTTP.  
-- **Controladores:** manejan las peticiones y respuestas.  
-- **Servicios:** encapsulan la lógica de negocio.  
-- **Modelos:** se comunican con Firestore.  
-- **Middleware:** valida el token JWT.
+🧑‍💻 Autor
 
----
-
-## 👨‍💻 Autor
-
-**Nicolás Torres Quintero**  
-Proyecto desarrollado en el marco del programa  
-**🎓 Talento Tech — Buenos Aires Aprende 2025**  
-
-💼 E-commerce de vinos **Tannat & Co.**
-
----
+Nicolás Torres Quintero
+Proyecto final — Talento Tech 2025
+E-commerce de vinos: Tannat & Co.
