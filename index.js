@@ -1,12 +1,16 @@
 import 'dotenv/config'; 
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+//import bodyParser from 'body-parser';
 import productsRouter from './src/routes/products.routes.js';
 import authRouter from './src/routes/auth.routes.js';
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const corsConfig = {
     origin: ['http://localhost:3000', 'https://tannatco.vercel.app'],
@@ -19,11 +23,17 @@ app.use(cors(corsConfig));
 app.use(express.json());
 
 // Endpoint raíz
-app.get('/', (_req, res) => res.send('Bienvenido a la API de Nicolas Torres'));
+app.get('/', (_req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 // Rutas reales
 app.use('/api', authRouter);      
-app.use('/api', productsRouter);       
+app.use('/api', productsRouter);    
+
+/*app.get("/index", (_req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});*/
 
 // Error 404
 app.use((req, res) => {

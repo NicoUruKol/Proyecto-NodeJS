@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Tester API TannatCO</title>
+        <style>
+            :root {
+                --bg: #0f172a;
+                --card: #111827;
+                --accent: #7c3aed;
+                --accent-soft: rgba(124, 58, 237, 0.15);
+                --text: #e5e7eb;
+                --muted: #9ca3af;
+                --danger: #ef4444;
+                --success: #22c55e;
+                --border: #1f2933;
+                --radius: 12px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 2rem;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                background: radial-gradient(circle at top, #1e293b, #020617 60%);
+                color: var(--text);
+                display: flex;
+                justify-content: center;
+            }
+
+            .app {
+                width: 100%;
+                max-width: 1080px;
+            }
+
+            h1 {
+                margin-top: 0;
+                font-size: 1.8rem;
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+            }
+
+            h1 span.logo {
+                display: inline-flex;
+                width: 32px;
+                height: 32px;
+                border-radius: 999px;
+                background: conic-gradient(from 200deg, #7c3aed, #ec4899, #facc15, #7c3aed);
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+            }
+
+            h1 small {
+                font-size: .8rem;
+                font-weight: 400;
+                color: var(--muted);
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            @media (max-width: 800px) {
+                .grid {
+                grid-template-columns: minmax(0, 1fr);
+                }
+            }
+
+            .card {
+                background: linear-gradient(145deg, rgba(15,23,42,.96), rgba(15,23,42,.98));
+                border-radius: var(--radius);
+                padding: 1.2rem 1.3rem;
+                border: 1px solid rgba(148, 163, 184, 0.12);
+                box-shadow: 0 22px 45px rgba(15, 23, 42, 0.8);
+                backdrop-filter: blur(18px);
+            }
+
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                margin-bottom: .75rem;
+            }
+
+            .card h2 {
+                margin: 0;
+                font-size: 1.05rem;
+            }
+
+            .card small {
+                color: var(--muted);
+                font-size: .8rem;
+            }
+
+            label {
+                display: block;
+                font-size: .8rem;
+                color: var(--muted);
+                margin-bottom: .18rem;
+            }
+
+            input, textarea {
+                width: 100%;
+                padding: .45rem .55rem;
+                border-radius: .45rem;
+                border: 1px solid #1f2937;
+                background: rgba(15,23,42,.8);
+                color: var(--text);
+                font-family: inherit;
+                font-size: .85rem;
+                outline: none;
+                transition: border-color .15s, box-shadow .15s, background .15s;
+            }
+
+            input:focus, textarea:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 1px rgba(124,58,237,0.4);
+                background: rgba(15,23,42,1);
+            }
+
+            textarea {
+                resize: vertical;
+                min-height: 60px;
+            }
+
+            .row {
+                display: flex;
+                gap: .6rem;
+                margin-bottom: .6rem;
+            }
+
+            .row > div {
+                flex: 1;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: .35rem;
+                padding: .45rem .9rem;
+                border-radius: 999px;
+                font-size: .82rem;
+                border: none;
+                cursor: pointer;
+                background: var(--accent);
+                color: white;
+                font-weight: 500;
+                box-shadow: 0 10px 25px rgba(124,58,237,0.45);
+                transition: transform .12s ease, box-shadow .12s ease, background .12s;
+            }
+
+            .btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 14px 30px rgba(124,58,237,0.6);
+                background: #6d28d9;
+            }
+
+            .btn-secondary {
+                background: rgba(148, 163, 184, 0.15);
+                color: var(--text);
+                box-shadow: none;
+                border: 1px solid rgba(148,163,184,0.4);
+            }
+
+            .btn-secondary:hover {
+                background: rgba(148, 163, 184, 0.25);
+                transform: translateY(-1px);
+            }
+
+            .btn-danger {
+                background: rgba(220, 38, 38, 0.12);
+                color: #fecaca;
+                border: 1px solid rgba(248, 113, 113, 0.7);
+                box-shadow: none;
+            }
+
+            .btn-danger:hover {
+                background: rgba(220, 38, 38, 0.2);
+            }
+
+            .btn-sm {
+                padding: .3rem .6rem;
+                font-size: .78rem;
+            }
+
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: .25rem;
+                padding: .15rem .5rem;
+                border-radius: 999px;
+                font-size: .7rem;
+                background: var(--accent-soft);
+                color: #e9d5ff;
+                border: 1px solid rgba(167,139,250,0.5);
+            }
+
+            .badge-danger {
+                background: rgba(248, 113, 113, 0.16);
+                color: #fecaca;
+                border-color: rgba(248,113,113,0.6);
+            }
+
+            .status-bar {
+                margin-top: .5rem;
+                font-size: .78rem;
+                color: var(--muted);
+                min-height: 1.1rem;
+            }
+
+            .status-bar span.ok {
+                color: var(--success);
+            }
+            .status-bar span.err {
+                color: var(--danger);
+            }
+
+            .token-box {
+                margin-top: .4rem;
+                font-size: .75rem;
+                padding: .4rem .5rem;
+                border-radius: .4rem;
+                background: rgba(15,23,42,.9);
+                border: 1px dashed rgba(148,163,184,.4);
+                word-break: break-all;
+                max-height: 4.5rem;
+                overflow: auto;
+            }
+
+            .table-wrapper {
+                margin-top: .5rem;
+                border-radius: .7rem;
+                border: 1px solid rgba(31,41,55,.95);
+                overflow: hidden;
+                background: radial-gradient(circle at top left, rgba(124,58,237,0.12), transparent 55%);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: .8rem;
+            }
+
+            thead {
+                background: rgba(15,23,42,.95);
+            }
+
+            th, td {
+                padding: .45rem .6rem;
+                border-bottom: 1px solid rgba(30,41,59,.88);
+            }
+
+            th {
+                text-align: left;
+                font-weight: 500;
+                color: var(--muted);
+                font-size: .76rem;
+            }
+
+            tbody tr:nth-child(even) {
+                background: rgba(15,23,42,0.85);
+            }
+
+            tbody tr:nth-child(odd) {
+                background: rgba(15,23,42,0.7);
+            }
+
+            .pill-id {
+                font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-size: .7rem;
+                padding: .1rem .45rem;
+                border-radius: 999px;
+                background: rgba(15,23,42,.9);
+                border: 1px solid rgba(148,163,184,.35);
+                display: inline-flex;
+                align-items: center;
+                gap: .25rem;
+            }
+
+            .pill-id strong {
+                color: var(--muted);
+            }
+
+            .pill-price {
+                font-weight: 600;
+                color: #bbf7d0;
+            }
+
+            .pill-id span.key {
+                color: rgba(148,163,184,.9);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app">
+            <h1>
+                <span class="logo">T</span>
+                Tester API TannatCO
+                <small>Mini panel para probar tu back en Node</small>
+            </h1>
+
+            <div class="grid">
+                <!-- PANEL LOGIN -->
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Login Admin</h2>
+                        <small>POST /auth/login</small>
+                    </div>
+
+                    <div class="row">
+                        <div>
+                        <label for="email">Email</label>
+                        <input id="email" type="email" value="test@gmail.com" />
+                        </div>
+                        <div>
+                        <label for="password">Password</label>
+                        <input id="password" type="password" value="123456" />
+                        </div>
+                    </div>
+
+                    <button id="btnLogin" class="btn">
+                        Iniciar sesión
+                    </button>
+
+                    <div class="status-bar" id="loginStatus"></div>
+
+                    <div class="token-box" id="tokenBox">
+                        Token no generado aún.
+                    </div>
+                </section>
+
+                <!-- PANEL CREAR PRODUCTO -->
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Crear producto</h2>
+                        <small>POST /products/create (requiere token)</small>
+                    </div>
+
+                    <div class="row">
+                        <div>
+                        <label for="name">Nombre</label>
+                        <input id="name" type="text" placeholder="Ej: Malbec Reserva" />
+                        </div>
+                        <div>
+                        <label for="price">Precio</label>
+                        <input id="price" type="number" step="0.01" placeholder="Ej: 2499" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div>
+                        <label for="productID">productID (numérico)</label>
+                        <input id="productID" type="number" placeholder="Ej: 101" />
+                        </div>
+                        <div>
+                        <label for="imagen">Imagen (URL opcional)</label>
+                        <input id="imagen" type="text" placeholder="https://..." />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="description">Descripción</label>
+                        <textarea id="description" placeholder="Notas, bodega, añada..."></textarea>
+                    </div>
+
+                    <div style="margin-top:.7rem; display:flex; gap:.6rem; justify-content:flex-start;">
+                        <button id="btnCreate" class="btn">Crear producto</button>
+                        <button id="btnClearForm" class="btn btn-secondary btn-sm">Limpiar formulario</button>
+                    </div>
+
+                    <div class="status-bar" id="createStatus"></div>
+                </section>
+            </div>
+
+        <!-- LISTADO DE PRODUCTOS -->
+            <section class="card" style="margin-top:1.5rem;">
+                <div class="card-header">
+                    <h2>Productos</h2>
+                    <div>
+                    <button id="btnReload" class="btn btn-secondary btn-sm">
+                        Recargar lista
+                    </button>
+                    <span class="badge" id="countBadge">0 productos</span>
+                    </div>
+                </div>
+
+                <small>GET /products · PUT /products/:productID · DELETE /products/:productID</small>
+
+                <!-- 🔍 Nuevo bloque de búsqueda -->
+                <div class="row" style="margin-top:.6rem;">
+                    <div>
+                    <label for="filterProductID">Buscar por productID</label>
+                    <div style="display:flex; gap:.5rem;">
+                        <input id="filterProductID" type="number" placeholder="Ej: 101" />
+                        <button id="btnSearchOne" class="btn btn-secondary btn-sm">Buscar</button>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper" style="margin-top:.7rem;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>productID</th>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsBody">
+                            <!-- filas dinámicas -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="status-bar" id="listStatus">
+
+                </div>
+            </section>
+        </div>
+
+        <script>
+  // Llamamos siempre a /api/...
+            const API_BASE = "/api";
+
+            let token = null;
+
+            const $ = (id) => document.getElementById(id);
+
+            const loginStatus = $("loginStatus");
+            const tokenBox = $("tokenBox");
+            const createStatus = $("createStatus");
+            const listStatus = $("listStatus");
+            const productsBody = $("productsBody");
+            const countBadge = $("countBadge");
+
+            async function apiFetch(path, options = {}) {
+                const url = API_BASE + path;
+                const headers = options.headers || {};
+
+                if (options.auth && token) {
+                    headers["Authorization"] = "Bearer " + token;
+                }
+
+                if (options.body && !headers["Content-Type"]) {
+                    headers["Content-Type"] = "application/json";
+                }
+
+                const res = await fetch(url, {
+                ...options,
+                headers,
+                });
+
+                let data;
+                try {
+                data = await res.json();
+                } catch (e) {
+                data = null;
+                }
+
+                if (!res.ok) {
+                const msg = data?.message || "Error en la petición";
+                throw new Error(msg);
+                }
+
+                return data;
+            }
+
+            // LOGIN (POST /api/login)
+            $("btnLogin").addEventListener("click", async () => {
+                const email = $("email").value.trim();
+                const password = $("password").value.trim();
+
+                loginStatus.textContent = "Enviando credenciales...";
+                loginStatus.className = "status-bar";
+
+                try {
+                const data = await apiFetch("/login", {
+                    method: "POST",
+                    body: JSON.stringify({ email, password }),
+                });
+                token = data.token;
+                loginStatus.innerHTML =
+                    '<span class="ok">Login OK. Token guardado en memoria.</span>';
+                tokenBox.textContent = token || "(sin token)";
+                } catch (err) {
+                loginStatus.innerHTML =
+                    '<span class="err">Error: ' + err.message + "</span>";
+                token = null;
+                tokenBox.textContent = "Token no generado.";
+                }
+            });
+
+            // CREAR PRODUCTO (POST /api/products/create)
+            $("btnCreate").addEventListener("click", async () => {
+                if (!token) {
+                createStatus.innerHTML =
+                    '<span class="err">Necesitás hacer login primero.</span>';
+                return;
+                }
+
+                const name = $("name").value.trim();
+                const priceValue = $("price").value;
+                const productIDValue = $("productID").value;
+                const imagen = $("imagen").value.trim();
+                const description = $("description").value.trim();
+
+                createStatus.textContent = "Enviando...";
+                createStatus.className = "status-bar";
+
+                const price = Number(priceValue);
+                const productID =
+                productIDValue === "" ? null : Number(productIDValue);
+
+                try {
+                const nuevo = await apiFetch("/products/create", {
+                    method: "POST",
+                    auth: true,
+                    body: JSON.stringify({
+                    name,
+                    price,
+                    description,
+                    imagen,
+                    productID,
+                    }),
+                });
+
+                createStatus.innerHTML =
+                    '<span class="ok">Producto creado con productID: ' +
+                    (nuevo.productID ?? "?") +
+                    "</span>";
+                } catch (err) {
+                createStatus.innerHTML =
+                    '<span class="err">Error: ' + err.message + "</span>";
+                }
+            });
+
+            $("btnClearForm").addEventListener("click", () => {
+                $("name").value = "";
+                $("price").value = "";
+                $("productID").value = "";
+                $("imagen").value = "";
+                $("description").value = "";
+                createStatus.textContent = "";
+            });
+
+            // LISTAR TODOS LOS PRODUCTOS (GET /api/products)
+            async function cargarProductos() {
+                listStatus.textContent = "Cargando productos...";
+                listStatus.className = "status-bar";
+                productsBody.innerHTML = "";
+
+                try {
+                const productos = await apiFetch("/products");
+                renderTablaProductos(productos, "Lista completa");
+                } catch (err) {
+                listStatus.innerHTML =
+                    '<span class="err">Error al cargar productos: ' +
+                    err.message +
+                    "</span>";
+                productsBody.innerHTML =
+                    '<tr><td colspan="5" style="text-align:center; padding:.8rem;">Error al cargar productos</td></tr>';
+                countBadge.textContent = "0 productos";
+                }
+            }
+
+            // RENDER GENERAL (para lista y producto único)
+            function renderTablaProductos(productos, mensajeOk) {
+                productsBody.innerHTML = "";
+
+                if (!Array.isArray(productos)) {
+                productos = productos ? [productos] : [];
+                }
+
+                if (productos.length === 0) {
+                productsBody.innerHTML =
+                    '<tr><td colspan="5" style="text-align:center; padding:.8rem;">No hay productos.</td></tr>';
+                countBadge.textContent = "0 productos";
+                listStatus.innerHTML =
+                    '<span class="ok">Lista vacía o sin datos.</span>';
+                return;
+                }
+
+                countBadge.textContent =
+                productos.length === 1
+                    ? "1 producto"
+                    : productos.length + " productos";
+
+                for (const p of productos) {
+                const tr = document.createElement("tr");
+
+                const tdId = document.createElement("td");
+                tdId.innerHTML =
+                    '<span class="pill-id"><span class="key">#</span>' +
+                    (p.productID ?? "?") +
+                    "</span>";
+
+                const tdImg = document.createElement("td");
+                if (p.imagen) {
+                    const img = document.createElement("img");
+                    img.src = p.imagen;
+                    img.alt = p.name ?? "producto";
+                    img.style.width = "48px";
+                    img.style.height = "48px";
+                    img.style.objectFit = "cover";
+                    img.style.borderRadius = "8px";
+                    img.referrerPolicy = "no-referrer";
+                    tdImg.appendChild(img);
+                } else {
+                    tdImg.textContent = "—";
+                }
+
+                const tdName = document.createElement("td");
+                tdName.textContent = p.name ?? "(sin nombre)";
+
+                const tdPrice = document.createElement("td");
+                tdPrice.innerHTML =
+                    '<span class="pill-price">$ ' + (p.price ?? "-") + "</span>";
+
+                const tdActions = document.createElement("td");
+                const btnEdit = document.createElement("button");
+                btnEdit.textContent = "Editar";
+                btnEdit.className = "btn btn-secondary btn-sm";
+                btnEdit.addEventListener("click", () => editarProductoPrompt(p));
+
+                const btnDel = document.createElement("button");
+                btnDel.textContent = "Eliminar";
+                btnDel.className = "btn btn-danger btn-sm";
+                btnDel.style.marginLeft = ".35rem";
+                btnDel.addEventListener("click", () => eliminarProducto(p));
+
+                tdActions.appendChild(btnEdit);
+                tdActions.appendChild(btnDel);
+
+                tr.appendChild(tdId);
+                tr.appendChild(tdImg);
+                tr.appendChild(tdName);
+                tr.appendChild(tdPrice);
+                tr.appendChild(tdActions);
+
+                productsBody.appendChild(tr);
+                }
+
+                listStatus.innerHTML =
+                '<span class="ok">' + (mensajeOk || "Productos cargados.") + "</span>";
+            }
+
+            // Botón "Recargar lista"
+            $("btnReload").addEventListener("click", cargarProductos);
+
+            // Buscar SOLO UN producto (GET /api/products/:id)
+            $("btnSearchOne").addEventListener("click", async () => {
+                const pid = $("filterProductID").value.trim();
+                if (!pid) {
+                listStatus.innerHTML =
+                    '<span class="err">Ingresá un productID para buscar.</span>';
+                return;
+                }
+
+                listStatus.textContent = "Buscando producto...";
+                listStatus.className = "status-bar";
+                productsBody.innerHTML = "";
+
+                try {
+                const producto = await apiFetch("/products/" + pid);
+                renderTablaProductos(producto, "Producto encontrado.");
+                } catch (err) {
+                listStatus.innerHTML =
+                    '<span class="err">Error: ' + err.message + "</span>";
+                productsBody.innerHTML =
+                    '<tr><td colspan="5" style="text-align:center; padding:.8rem;">No se encontró producto con ese productID.</td></tr>';
+                countBadge.textContent = "0 productos";
+                }
+            });
+
+            // EDITAR PRODUCTO (PUT /api/products/:productID)
+            async function editarProductoPrompt(producto) {
+                if (!token) {
+                alert("Necesitás hacer login primero.");
+                return;
+                }
+
+                const nuevoNombre = prompt(
+                `Nuevo nombre para "${producto.name}" (ENTER para dejar igual):`,
+                producto.name ?? ""
+                );
+                if (nuevoNombre === null) return; // cancel
+
+                const nuevoPrecioStr = prompt(
+                `Nuevo precio (actual: ${producto.price ?? "-"}) (ENTER para dejar igual):`,
+                producto.price ?? ""
+                );
+                if (nuevoPrecioStr === null) return;
+
+                const nuevaDesc = prompt(
+                "Nueva descripción (ENTER para dejar igual):",
+                producto.description ?? ""
+                );
+                if (nuevaDesc === null) return;
+
+                const nuevaImagen = prompt(
+                "Nueva URL de imagen (ENTER para dejar igual):",
+                producto.imagen ?? ""
+                );
+                if (nuevaImagen === null) return;
+
+                const updateData = {};
+
+                if (nuevoNombre.trim() !== "" && nuevoNombre !== producto.name) {
+                updateData.name = nuevoNombre.trim();
+                }
+
+                if (nuevoPrecioStr.trim() !== "") {
+                const nuevoPrecio = Number(nuevoPrecioStr);
+                if (Number.isNaN(nuevoPrecio)) {
+                    alert("Precio inválido.");
+                    return;
+                }
+                if (nuevoPrecio !== producto.price) {
+                    updateData.price = nuevoPrecio;
+                }
+                }
+
+                if (
+                nuevaDesc.trim() !== "" &&
+                nuevaDesc !== (producto.description ?? "")
+                ) {
+                updateData.description = nuevaDesc.trim();
+                }
+
+                if (
+                nuevaImagen.trim() !== "" &&
+                nuevaImagen !== (producto.imagen ?? "")
+                ) {
+                updateData.imagen = nuevaImagen.trim();
+                }
+
+                if (Object.keys(updateData).length === 0) {
+                alert("No se hicieron cambios.");
+                return;
+                }
+
+                try {
+                const updated = await apiFetch(
+                    "/products/" + producto.productID,
+                    {
+                    method: "PUT",
+                    auth: true,
+                    body: JSON.stringify(updateData),
+                    }
+                );
+                listStatus.innerHTML =
+                    '<span class="ok">Producto actualizado: ' +
+                    (updated.name ?? "") +
+                    "</span>";
+                // No recargo todo para no cambiar el filtro, pero si querés:
+                // await cargarProductos();
+                } catch (err) {
+                alert("Error al actualizar: " + err.message);
+                }
+            }
+
+            // ELIMINAR PRODUCTO (DELETE /api/products/:productID)
+            async function eliminarProducto(producto) {
+                if (!token) {
+                alert("Necesitás hacer login primero.");
+                return;
+                }
+
+                const ok = confirm(
+                `¿Seguro que querés eliminar "${producto.name}" (productID=${producto.productID})?`
+                );
+                if (!ok) return;
+
+                try {
+                await apiFetch("/products/" + producto.productID, {
+                    method: "DELETE",
+                    auth: true,
+                });
+                listStatus.innerHTML =
+                    '<span class="ok">Producto eliminado.</span>';
+                // Podés recargar la lista si querés:
+                // await cargarProductos();
+                } catch (err) {
+                alert("Error al eliminar: " + err.message);
+                }
+            }
+
+            // OJO: ya NO llamo a cargarProductos() al inicio,
+            // así solo lista cuando el profe toca "Recargar lista" o "Buscar".
+            </script>
+
+    </body>
+</html>
