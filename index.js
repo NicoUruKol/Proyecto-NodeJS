@@ -16,21 +16,21 @@ const corsConfig = {
 };
 
 app.use(cors(corsConfig));
-app.use(bodyParser.json());
+app.use(express.json());
 
-// 👉 Primero el endpoint raíz
-app.get('/', (_req, res) => res.send('API OK'));
+// Endpoint raíz
+app.get('/', (_req, res) => res.send('Bienvenido a la API de Nicolas Torres'));
 
-// 👉 Luego las rutas reales
-app.use('/auth', authRouter);       // POST /auth/login
-app.use('/', productsRouter);       // /products, /products/:id, etc.
+// Rutas reales
+app.use('/api', authRouter);      
+app.use('/api', productsRouter);       
 
-// 👉 404 al final
+// Error 404
 app.use((req, res) => {
     res.status(404).json({ message: 'Ruta no encontrada' });
 });
 
-// 👉 Manejador de errores
+// Manejador de errores
 app.use((err, _req, res, _next) => {
     const status = err.status && Number.isInteger(err.status) ? err.status : 500;
     const message = err.message || 'Error interno';
