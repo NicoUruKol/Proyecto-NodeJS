@@ -304,12 +304,12 @@
         <div class="app">
             <h1>
                 <span class="logo">T</span>
-                Tester API TannatCO
-                <small>Mini panel para probar tu back en Node</small>
+                Tester API Talento Tech
+                <small>Mini panel para probar el back en Node</small>
             </h1>
 
             <div class="grid">
-                <!-- PANEL LOGIN -->
+<!-- PANEL LOGIN -->
                 <section class="card">
                     <div class="card-header">
                         <h2>Login Admin</h2>
@@ -323,7 +323,7 @@
                         </div>
                         <div>
                         <label for="password">Password</label>
-                        <input id="password" type="password" value="123456" />
+                        <input id="password" type="password" value="" />
                         </div>
                     </div>
 
@@ -338,7 +338,7 @@
                     </div>
                 </section>
 
-                <!-- PANEL CREAR PRODUCTO -->
+<!-- PANEL CREAR PRODUCTO -->
                 <section class="card">
                     <div class="card-header">
                         <h2>Crear producto</h2>
@@ -381,13 +381,13 @@
                 </section>
             </div>
 
-        <!-- LISTADO DE PRODUCTOS -->
+<!-- LISTADO DE PRODUCTOS -->
             <section class="card" style="margin-top:1.5rem;">
                 <div class="card-header">
                     <h2>Productos</h2>
                     <div>
                     <button id="btnReload" class="btn btn-secondary btn-sm">
-                        Recargar lista
+                        Ver/Recargar lista
                     </button>
                     <span class="badge" id="countBadge">0 productos</span>
                     </div>
@@ -395,7 +395,7 @@
 
                 <small>GET /products · PUT /products/:productID · DELETE /products/:productID</small>
 
-                <!-- 🔍 Nuevo bloque de búsqueda -->
+<!-- 🔍 Nuevo bloque de búsqueda -->
                 <div class="row" style="margin-top:.6rem;">
                     <div>
                     <label for="filterProductID">Buscar por productID</label>
@@ -418,7 +418,7 @@
                             </tr>
                         </thead>
                         <tbody id="productsBody">
-                            <!-- filas dinámicas -->
+<!-- filas dinámicas -->
                         </tbody>
                     </table>
                 </div>
@@ -430,7 +430,7 @@
         </div>
 
         <script>
-  // Llamamos siempre a /api/...
+// Llamamos siempre a /api/...
             const API_BASE = "/api";
 
             let token = null;
