@@ -57,7 +57,7 @@ Proyecto-NodeJS/
 │   ├── middlewares/
 │   │   └── auth.middleware.js
 │   └── data/
-│       └── firebase.js
+│       └── data.js
 │
 ├── index.js
 ├── tester.html
