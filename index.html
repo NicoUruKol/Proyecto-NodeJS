@@ -327,9 +327,18 @@
                         </div>
                     </div>
 
-                    <button id="btnLogin" class="btn">
-                        Iniciar sesión
-                    </button>
+                    <div style="display:flex; gap:.5rem; margin-top:.4rem;">
+                        <button id="btnLogin" class="btn">
+                            Iniciar sesión
+                        </button>
+                        <button
+                            id="btnLogout"
+                            class="btn btn-secondary btn-sm"
+                            type="button"
+                            >
+                            Cerrar sesión
+                            </button>
+                    </div>
 
                     <div class="status-bar" id="loginStatus"></div>
 
@@ -500,7 +509,14 @@
                 tokenBox.textContent = "Token no generado.";
                 }
             });
-
+            $("btnLogout").addEventListener("click", () => {
+                token = null;
+                tokenBox.textContent = "Token no generado aún.";
+                loginStatus.innerHTML =
+                '<span class="ok">Sesión cerrada correctamente.</span>';
+                $("password").value = "";
+                $("email").value = "";
+            });
             // CREAR PRODUCTO (POST /api/products/create)
             $("btnCreate").addEventListener("click", async () => {
                 if (!token) {
